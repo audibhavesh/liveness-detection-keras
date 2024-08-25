@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     # Optional: Apply optimizations (e.g., quantization)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
-git
+
     # Convert the model to TFLite format
     tflite_model = converter.convert()
 
