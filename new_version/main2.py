@@ -32,7 +32,23 @@ def run():  # Define the command and its arguments
     print("Output:\n", result.stdout)
     print("Errors:\n", result.stderr)
 
+def tflite_run():  # Define the command and its arguments
+    command = [
+        'python3', 'tflite_demo.py',
+        '--model', 'liveness_model.tflite',
+        '--le', 'le.pickle',
+        '--detector', 'face_detector'
+    ]
+
+    # Execute the command
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    # Print the output and errors
+    print("Output:\n", result.stdout)
+    print("Errors:\n", result.stderr)
+
 
 if __name__ == '__main__':
-    train()
+    # train()
     # run()
+    tflite_run()
