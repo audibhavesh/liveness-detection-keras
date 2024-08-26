@@ -1,12 +1,13 @@
 import subprocess
 
+import pickle
 
 def train():
     print("")
 
     # Define the command as a list of strings
     command = [
-        'python3',
+        'python',
         'train_liveness.py',
         '--dataset', 'dataset',
         '--model', 'liveness.keras',
@@ -19,7 +20,7 @@ def train():
 
 def run():  # Define the command and its arguments
     command = [
-        'python3', 'liveness_demo.py',
+        'python', 'liveness_demo.py',
         '--model', 'liveness.keras',
         '--le', 'le.pickle',
         '--detector', 'face_detector'
@@ -34,7 +35,7 @@ def run():  # Define the command and its arguments
 
 def tflite_run():  # Define the command and its arguments
     command = [
-        'python3', 'tflite_demo.py',
+        'python', 'tflite_demo.py',
         '--model', 'liveness_model.tflite',
         '--le', 'le.pickle',
         '--detector', 'face_detector'
@@ -51,4 +52,9 @@ def tflite_run():  # Define the command and its arguments
 if __name__ == '__main__':
     # train()
     # run()
+    # with open("le.pickle", "rb") as f:
+    #     le = pickle.load(f)
+    #
+    # print("CLASSS ")
+    # print(le.classes_)
     tflite_run()

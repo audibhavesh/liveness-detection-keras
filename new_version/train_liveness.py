@@ -22,6 +22,8 @@ import argparse
 import pickle
 import cv2
 import os
+import tensorflow as tf
+
 
 def to_categorical(y, num_classes=None):
     y = np.array(y, dtype='int')
@@ -32,6 +34,7 @@ def to_categorical(y, num_classes=None):
     categorical = np.zeros((n, num_classes))
     categorical[np.arange(n), y] = 1
     return categorical
+
 
 # Construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -88,6 +91,7 @@ opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS)
 model = LivenessNet.build(width=32, height=32, depth=3, classes=len(le.classes_))
 model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
 
+model = tf.keras.models.load_model(args["model"])
 # Train the network
 print("[INFO] training network for {} epochs...".format(EPOCHS))
 H = model.fit(aug.flow(trainX, trainY, batch_size=BS),
@@ -103,10 +107,25 @@ print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), ta
 # Save the network to disk
 print("[INFO] serializing network to '{}'...".format(args["model"]))
 model.save(args["model"])
+model.export("liveness_export")
 
 # Save the label encoder to disk
 with open(args["le"], "wb") as f:
     f.write(pickle.dumps(le))
+
+
+converter = tf.lite.TFLiteConverter.from_saved_model('liveness_export')
+
+    # Optional: Apply optimizations (e.g., quantization)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+
+    # Convert the model to TFLite format
+tflite_model = converter.convert()
+
+    # Save the TFLite model
+with open('liveness_model.tflite', 'wb') as f:
+    f.write(tflite_model)
+
 
 # Plot the training loss and accuracy
 plt.style.use("ggplot")

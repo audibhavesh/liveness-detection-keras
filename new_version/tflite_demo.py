@@ -12,7 +12,8 @@ import tensorflow as tf
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", type=str, required=True, help="path to trained TFLite model")
 ap.add_argument("-l", "--le", type=str, required=True, help="path to label encoder")
-ap.add_argument("-d", "--detector", type=str, required=True, help="path to OpenCV's deep learning face detector")
+ap.add_argument(
+    "-d", "--detector", type=str, required=True, help="path to OpenCV's deep learning face detector")
 ap.add_argument("-c", "--confidence", type=float, default=0.5, help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
@@ -31,6 +32,8 @@ interpreter.allocate_tensors()
 with open(args["le"], "rb") as f:
     le = pickle.load(f)
 
+print("CLASSS ")
+print(le.classes_)
 # Initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()

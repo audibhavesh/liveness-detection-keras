@@ -41,6 +41,7 @@ time.sleep(2.0)
 while True:
     # Grab the frame from the threaded video stream and resize it
     frame = vs.read()
+    frame = cv2.flip(frame, 1)
     frame = imutils.resize(frame, width=600)
 
     # Grab the frame dimensions and convert it to a blob
