@@ -64,9 +64,16 @@ for imagePath in imagePaths:
     label = imagePath.split(os.path.sep)[-2]
     image = cv2.imread(imagePath)
     image = cv2.resize(image, (32, 32))
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # Update the data and labels lists
     data.append(image)
+
+    if label == "fake2":
+        label = "fake"
+    if label == "real2":
+        label = "real"
+
     labels.append(label)
 
 # Convert the data into a NumPy array, then preprocess it by scaling all pixel intensities to the range [0, 1]
@@ -91,7 +98,7 @@ opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / EPOCHS)
 model = LivenessNet.build(width=32, height=32, depth=3, classes=len(le.classes_))
 model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
 
-model = tf.keras.models.load_model(args["model"])
+# model = tf.keras.models.load_model(args["model"])
 # Train the network
 print("[INFO] training network for {} epochs...".format(EPOCHS))
 H = model.fit(aug.flow(trainX, trainY, batch_size=BS),
@@ -113,19 +120,17 @@ model.export("liveness_export")
 with open(args["le"], "wb") as f:
     f.write(pickle.dumps(le))
 
-
 converter = tf.lite.TFLiteConverter.from_saved_model('liveness_export')
 
-    # Optional: Apply optimizations (e.g., quantization)
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
+# Optional: Apply optimizations (e.g., quantization)
+# converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
-    # Convert the model to TFLite format
+# Convert the model to TFLite format
 tflite_model = converter.convert()
 
-    # Save the TFLite model
+# Save the TFLite model
 with open('liveness_model.tflite', 'wb') as f:
     f.write(tflite_model)
-
 
 # Plot the training loss and accuracy
 plt.style.use("ggplot")

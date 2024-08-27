@@ -87,6 +87,7 @@ while True:
 
             j = np.argmax(preds)
             label = le.classes_[j]
+            print("INDEX " + str(j) + " LABEL " + label)
 
             # Draw the label and bounding box on the frame
             label = "{}: {:.4f}".format(label, preds[j])
