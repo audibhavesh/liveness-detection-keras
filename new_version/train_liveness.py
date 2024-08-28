@@ -69,13 +69,15 @@ for imagePath in imagePaths:
     # Update the data and labels lists
     data.append(image)
 
-    if label == "fake2":
+    if "fake" in label:
         label = "fake"
-    if label == "real2":
+    if "real" in label:
         label = "real"
 
     labels.append(label)
 
+print("Labels:: " + str(labels))
+print("Data:: " + str(len(data)))
 # Convert the data into a NumPy array, then preprocess it by scaling all pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float32") / 255.0
 

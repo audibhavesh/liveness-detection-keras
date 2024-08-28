@@ -73,7 +73,7 @@ while True:
             startY = max(0, startY)
             endX = min(w, endX)
             endY = min(h, endY)
-
+    
             # Extract the face ROI and preprocess it in the exact same manner as our training data
             face = frame[startY:endY, startX:endX]
             face = cv2.resize(face, (32, 32))

@@ -8,7 +8,7 @@ def train():
 
     # Define the command as a list of strings
     command = [
-        'python3',
+        'python',
         'train_liveness.py',
         '--dataset', 'dataset',
         '--model', 'liveness.keras',
@@ -37,7 +37,7 @@ def run():  # Define the command and its arguments
 
 def tflite_run():  # Define the command and its arguments
     command = [
-        'python3', 'tflite_demo.py',
+        'python', 'tflite_demo.py',
         '--model', 'liveness_model.tflite',
         '--le', 'le.pickle',
         '--detector', 'face_detector'
@@ -53,9 +53,9 @@ def tflite_run():  # Define the command and its arguments
 
 def create_dataset():  # Define the command and its arguments
     command = [
-        'python3', 'gather_examples.py',
-        '-i', 'videos/fake2.mov',
-        '-o', 'dataset/fake2',
+        'python', 'gather_examples.py',
+        '-i', 'videos/real3.mp4',
+        '-o', 'dataset/real3',
         '--detector', 'face_detector',
         "--skip", "4"
     ]
@@ -69,12 +69,12 @@ def create_dataset():  # Define the command and its arguments
 
 
 if __name__ == '__main__':
-    train()
+    # train()
     # run()
     # with open("le.pickle", "rb") as f:
     #     le = pickle.load(f)
     #
     # print("CLASSS ")
     # print(le.classes_)
-    # tflite_run()
+    tflite_run()
     # create_dataset()
